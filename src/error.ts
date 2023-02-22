@@ -11,7 +11,7 @@ class AppError extends Error{
     }
 }   
 
-const handleErrors = (err: Error, req: Request, resp: Response, next: NextFunction)=>{
+const handleErrors = (err: Error, req: Request, resp: Response, next: NextFunction) => {
     if(err instanceof AppError){
         return resp.status(err.statusCode).json({
             message: err.message

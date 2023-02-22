@@ -4,7 +4,6 @@ import format from 'pg-format'
 import { QueryConfig, QueryResult } from 'pg'
 import { AppError } from '../../error'
 
-
 const createUserServices = async (userData: IuserReq): Promise<IuserWithoutPassword> =>{
 
     const queryString: string = format(
