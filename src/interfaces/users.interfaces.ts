@@ -1,23 +1,23 @@
 import { QueryResult } from "pg"
 
-interface IuserReq{
-    name: string,
+interface IUserReq {
+    name:string,
     email: string,
-    password: string | number,
+    password: string,
     admin: boolean,
     active: boolean
 }
 
-interface Iuser extends IuserReq{
+interface IUser extends IUserReq{
     id: number
 }
 
-type IuserWithoutPassword = Omit<Iuser, 'password'>;
-type IuserResult = QueryResult<IuserWithoutPassword>;
+type IUserWithoutPassword = Omit<IUser, 'password'>
+type IUserResult = QueryResult<IUserWithoutPassword>
 
 export {
-    IuserReq,
-    Iuser,
-    IuserResult,
-    IuserWithoutPassword
+    IUserReq,
+    IUser,
+    IUserResult,
+    IUserWithoutPassword
 }

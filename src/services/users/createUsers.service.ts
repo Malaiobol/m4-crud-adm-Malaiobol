@@ -1,10 +1,30 @@
-import { IuserReq, IuserResult, IuserWithoutPassword } from '../../interfaces/users.interfaces'
+import { IUserReq, IUserResult, IUserWithoutPassword } from '../../interfaces/users.interfaces'
 import { client } from '../../database'
 import format from 'pg-format'
 import { QueryConfig, QueryResult } from 'pg'
 import { AppError } from '../../error'
 
-const createUserServices = async (userData: IuserReq): Promise<IuserWithoutPassword> =>{
+const createUsersService = async (userData: IUserReq): Promise<IUserWithoutPassword> => {
+
+    const queryStringUserExist: string = `
+        SELECT
+            *
+        FROM
+            users
+        WHERE
+            email = $1;
+    `
+
+    const queryConfigUserExists: QueryConfig = {
+        text: queryStringUserExist,
+        values: [userData.email]
+    }
+
+    const queryResultUserExists: QueryResult = await client.query(queryConfigUserExists)
+
+    if(queryResultUserExists.rowCount > 0){
+        throw new AppError('Email already exists', 409)
+    }
 
     const queryString: string = format(
         `
@@ -12,39 +32,20 @@ const createUserServices = async (userData: IuserReq): Promise<IuserWithoutPassw
                 users(%I)
             VALUES(%L)
             RETURNING 
-                id, 
-                name, 
-                email, 
-                admin, 
-                active
+                id,
+                name,
+                email,
+                active,
+                admin
             ;
         `,
         Object.keys(userData),
         Object.values(userData)
     )
 
-    const queryStringUserExist: string =
-    `
-        SELECT
-            *
-        FROM
-            users
-        WHERE
-            email = $1
-        ;    
-    `
-    
-    const queryConfigUserExists: QueryConfig = {
-        text: queryStringUserExist,
-        values: [userData.email]
-    } 
+    const queryResult: IUserResult = await client.query(queryString)
 
-    const queryResultUserExists: QueryResult = await client.query(queryConfigUserExists)
-    if(queryResultUserExists.rowCount > 0){
-        throw new AppError('E-mail already registered', 409)
-    }
-    const  queryResult: IuserResult = await client.query(queryString)
     return queryResult.rows[0]
 }
 
-export default createUserServices
+export default createUsersService
