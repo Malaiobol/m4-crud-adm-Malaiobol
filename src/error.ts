@@ -1,3 +1,5 @@
+import { NextFunction, Response, Request } from "express"
+
 class AppError extends Error{
     message: string
     statusCode: number
@@ -9,6 +11,19 @@ class AppError extends Error{
     }
 }   
 
+const handleErrors = (err: Error, req: Request, resp: Response, next: NextFunction)=>{
+    if(err instanceof AppError){
+        return resp.status(err.statusCode).json({
+            message: err.message
+        })  
+    } 
+    console.log(err)
+    return resp.status(500).json({
+        message: 'Internal server error'
+    })
+}
+
 export {
-    AppError    
+    AppError,
+    handleErrors  
 }
