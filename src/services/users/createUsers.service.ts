@@ -2,6 +2,8 @@ import { IuserReq, IuserResult, IuserWithoutPassword } from '../../interfaces/us
 import { client } from '../../database'
 import format from 'pg-format'
 import { QueryConfig, QueryResult } from 'pg'
+import { AppError } from '../../error'
+
 
 const createUserServices = async (userData: IuserReq): Promise<IuserWithoutPassword> =>{
 
@@ -40,7 +42,7 @@ const createUserServices = async (userData: IuserReq): Promise<IuserWithoutPassw
 
     const queryResultUserExists: QueryResult = await client.query(queryConfigUserExists)
     if(queryResultUserExists.rowCount > 0){
-        throw new Error('E-mail already registered')
+        throw new AppError('E-mail already registered', 409)
     }
     const  queryResult: IuserResult = await client.query(queryString)
     return queryResult.rows[0]
