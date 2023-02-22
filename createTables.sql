@@ -5,6 +5,6 @@ CREATE TABLE IF NOT EXISTS users(
     "name" CHARACTER(20) NOT NULL,
     "email" CHARACTER(100) UNIQUE NOT NULL,
     "password" CHARACTER(120) NOT NULL,
-    "admin" BOOLEAN SET DEFAULT FALSE,
-    "active" BOOLEAN SET DEFAULT TRUE,    
+    "admin" BOOLEAN DEFAULT FALSE,
+    "active" BOOLEAN DEFAULT TRUE,    
 );
