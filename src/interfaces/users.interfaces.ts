@@ -16,6 +16,7 @@ type IUser = z.infer<typeof returnUserSchema>
 type IUserWithoutPassword = z.infer<typeof returnUserSchemaWithoutPassword>
 type IUsersList = z.infer<typeof usersList>
 type IUserResult = QueryResult<IUserWithoutPassword>
+type IUserResultWithPassword = QueryResult<IUser>
 
 type IUpdateReq = z.infer<typeof updatedUserSchema>
 type IUpdatedUser = z.infer<typeof returnUpdatedUserSchema>
@@ -27,7 +28,7 @@ export {
     IUser,
     IUserResult,
     IUserWithoutPassword,
-    
+    IUserResultWithPassword,
     IUsersList,
 
     IUpdateReq,
