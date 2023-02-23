@@ -14,8 +14,11 @@ const returnUserSchema = createUserSchema.extend({
 
 const returnUserSchemaWithoutPassword = returnUserSchema.omit({password: true})
 
+const usersList = z.array(returnUserSchemaWithoutPassword)
+
 export {
     createUserSchema,
     returnUserSchema,
-    returnUserSchemaWithoutPassword
+    returnUserSchemaWithoutPassword,
+    usersList
 }

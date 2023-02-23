@@ -7,9 +7,8 @@ import { createUserSchema, returnUserSchemaWithoutPassword } from '../../schemas
 
 const createUsersService = async (userData: IUserReq): Promise<IUserWithoutPassword> => {
 
-    const validatedUserData = createUserSchema.parse(userData)
-
-    const queryStringUserExist: string = `
+    const queryStringUserExist: string = 
+    `
         SELECT
             *
         FROM
@@ -20,7 +19,7 @@ const createUsersService = async (userData: IUserReq): Promise<IUserWithoutPassw
 
     const queryConfigUserExists: QueryConfig = {
         text: queryStringUserExist,
-        values: [validatedUserData.email]
+        values: [userData.email]
     }
 
     const queryResultUserExists: QueryResult = await client.query(queryConfigUserExists)
@@ -36,10 +35,10 @@ const createUsersService = async (userData: IUserReq): Promise<IUserWithoutPassw
             VALUES(%L)
             RETURNING *;
         `,
-        Object.keys(validatedUserData),
-        Object.values(validatedUserData)
+        Object.keys(userData),
+        Object.values(userData)
     )
-    
+
     const queryResult: IUserResult = await client.query(queryString)
     const newUser = returnUserSchemaWithoutPassword.parse(queryResult.rows[0])
     return newUser
