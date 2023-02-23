@@ -1,21 +1,25 @@
 import { Router } from 'express'
-import deleteUserService from '../services/users/deleteUser.service'
+import ensureEmailIsUnique from '../middlewares/ensureEmailIsUnique.middlewares'
 import ensureDataIsValidMiddleware from '../middlewares/ensureDataIsValid.middlewares'
-import { createUserSchema } from '../schemas/user.schemas'
+import { 
+    createUserSchema, 
+    updatedUserSchema 
+} from '../schemas/user.schemas'
 import { 
     createUserController, 
-    retrieveUsersController 
+    deleteUserController, 
+    reactiveUserController, 
+    retrieveUsersController, 
+    updateUserController
 } from '../controllers/users.controllers'
-
-
 
 const userRoutes: Router = Router()
 
-userRoutes.post('', ensureDataIsValidMiddleware(createUserSchema), createUserController)
+userRoutes.post('', ensureEmailIsUnique, ensureDataIsValidMiddleware(createUserSchema), createUserController)
 userRoutes.get('', retrieveUsersController)
 userRoutes.get('/profile')
-userRoutes.patch('/:id')
-userRoutes.delete('/:id', deleteUserService)
-userRoutes.put('/:id/recover')
+userRoutes.patch('/:id', ensureEmailIsUnique,ensureDataIsValidMiddleware(updatedUserSchema), updateUserController)
+userRoutes.delete('/:id', deleteUserController)
+userRoutes.put('/:id/recover', reactiveUserController)
 
 export default userRoutes

@@ -1,8 +1,10 @@
 import { Request, Response } from 'express'
 import { IUserReq } from '../interfaces/users.interfaces'
-import createUserService from '../services/users/createUsers.service'
+import updateUserReq from '../services/users/updateUser.service'
+import createUserService from '../services/users/createUser.service'
 import deleteUserService from '../services/users/deleteUser.service'
 import retrieveAllUsers from '../services/users/retrieveUsers.service'
+import reactiveUserService from '../services/users/reactiveUser.service'
 
 const createUserController = async (req: Request, resp: Response): Promise<Response> => {
     const userData: IUserReq = req.body
@@ -21,7 +23,23 @@ const retrieveUsersController = async (req: Request, resp: Response): Promise<Re
     return resp.json(users)
 }
 
+const updateUserController = async (req: Request, resp: Response): Promise<Response> =>{
+    const userId: number = parseInt(req.params.id)
+    const updateReq: string = req.body
+    const updatedUser = await updateUserReq(userId, updateReq)
+    return resp.status(200).json(updatedUser)
+}
+
+const reactiveUserController = async (req: Request, resp: Response): Promise<Response> =>{
+    const userId: number = parseInt(req.params.id)
+    const reactivedUser = await reactiveUserService(userId)
+    return resp.status(200).json(reactivedUser)
+}
+
 export {
     createUserController,
-    retrieveUsersController
+    retrieveUsersController,
+    updateUserController,
+    deleteUserController,
+    reactiveUserController
 }
