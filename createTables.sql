@@ -2,9 +2,9 @@ CREATE DATABASE users_data;
 
 CREATE TABLE IF NOT EXISTS users(
     "id" BIGSERIAL PRIMARY KEY,
-    "name" CHARACTER(20) NOT NULL,
-    "email" CHARACTER(100) UNIQUE NOT NULL,
-    "password" CHARACTER(120) NOT NULL,
+    "name" VARCHAR(20) NOT NULL,
+    "email" VARCHAR(100) UNIQUE NOT NULL,
+    "password" VARCHAR(120) NOT NULL,
     "admin" BOOLEAN DEFAULT FALSE,
     "active" BOOLEAN DEFAULT TRUE,    
 );

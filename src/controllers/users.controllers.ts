@@ -1,12 +1,12 @@
 import { Request, Response } from 'express'
-import { IuserReq } from '../interfaces/users.interfaces'
+import { IUserReq } from '../interfaces/users.interfaces'
 import createUserService from '../services/users/createUsers.service'
 import deleteUserService from '../services/users/deleteUser.service'
 
 const createUserController = async (req: Request, resp: Response): Promise<Response> => {
-    const userData: IuserReq = req.body
+    const userData: IUserReq = req.body
     const newUser = await createUserService(userData)
-    return resp.status(201).json({newUser})
+    return resp.status(201).json(newUser)
 }
 
 const deleteUserController = async (req: Request, resp: Response): Promise<Response> =>{
@@ -17,7 +17,7 @@ const deleteUserController = async (req: Request, resp: Response): Promise<Respo
 
 // const retrieveUsersController = async (req: Request, resp: Response): Promise<Response> =>{
 //     const users =  await retrieveActualUser()
-//     return resp.status(200).json({users})
+//     return resp.status(200).json(users)
 // }
 
 export {
