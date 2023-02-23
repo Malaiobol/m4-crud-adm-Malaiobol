@@ -1,9 +1,10 @@
 import { Router } from 'express'
-import ensureEmailIsUnique from '../middlewares/ensureDevIsAdmin.middlewares'
+import ensureEmailIsUnique from '../middlewares/ensureEmailIsUnique.middlewares copy'
 import ensureDataIsValidMiddleware from '../middlewares/ensureDataIsValid.middlewares'
 import ensureTokenIsValidMiddleware from '../middlewares/ensureTokenIsValid.middlewares'
 import ensureDevExistsMiddleware from '../middlewares/ensureDevExists.middlewares'
 import ensureDevIsAdminMiddleware from '../middlewares/ensureDevIsAdmin.middlewares'
+import ensureIsActualDevMiddleware from '../middlewares/ensureIsActualDev.middlewares'
 import { 
     createUserSchema, 
     updatedUserSchema 
@@ -22,8 +23,8 @@ const userRoutes: Router = Router()
 userRoutes.post('', ensureEmailIsUnique, ensureDataIsValidMiddleware(createUserSchema), createUserController)
 userRoutes.get('', ensureTokenIsValidMiddleware, ensureDevIsAdminMiddleware, retrieveUsersController)
 userRoutes.get('/profile', ensureTokenIsValidMiddleware, retrieveLoggedUserController)
-userRoutes.patch('/:id', ensureTokenIsValidMiddleware, ensureDevExistsMiddleware,  ensureEmailIsUnique, ensureDataIsValidMiddleware(updatedUserSchema), updateUserController)
-userRoutes.delete('/:id', ensureTokenIsValidMiddleware, ensureDevExistsMiddleware, deleteUserController)
-userRoutes.put('/:id/recover',ensureTokenIsValidMiddleware, ensureDevExistsMiddleware, ensureDevIsAdminMiddleware, reactiveUserController)
+userRoutes.patch('/:id', ensureTokenIsValidMiddleware, ensureIsActualDevMiddleware, ensureDevExistsMiddleware, ensureEmailIsUnique, ensureDataIsValidMiddleware(updatedUserSchema), updateUserController)
+userRoutes.delete('/:id', ensureTokenIsValidMiddleware, ensureIsActualDevMiddleware, ensureDevExistsMiddleware, deleteUserController)
+userRoutes.put('/:id/recover', ensureTokenIsValidMiddleware, ensureDevExistsMiddleware, ensureDevIsAdminMiddleware, reactiveUserController)
 
 export default userRoutes

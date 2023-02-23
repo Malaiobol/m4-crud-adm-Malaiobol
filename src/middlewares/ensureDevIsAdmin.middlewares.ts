@@ -1,15 +1,14 @@
-import { NextFunction, Request, Response } from 'express'
-import { AppError } from '../error'
+import { NextFunction, Request, Response } from "express"
+import { AppError } from "../error"
 
-const ensureDevIsAdmin = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
-    
-    const isAdmin = req.user.admin
+const ensureDevIsAdminMiddleware = async (req: Request, resp: Response, next: NextFunction): Promise<void> =>{
+    const actualUser = req.user 
 
-    if(!isAdmin){
+    if(actualUser.admin === false){
         throw new AppError('Insufficient Permission', 403)
     }
 
     return next()
 }
 
-export default ensureDevIsAdmin
+export default ensureDevIsAdminMiddleware
