@@ -5,6 +5,7 @@ import createUserService from '../services/users/createUser.service'
 import deleteUserService from '../services/users/deleteUser.service'
 import retrieveAllUsers from '../services/users/retrieveUsers.service'
 import reactiveUserService from '../services/users/reactiveUser.service'
+import retrieveLoggedUserService from '../services/users/retrieveLoggedUser.service'
 
 const createUserController = async (req: Request, resp: Response): Promise<Response> => {
     const userData: IUserReq = req.body
@@ -36,8 +37,10 @@ const reactiveUserController = async (req: Request, resp: Response): Promise<Res
     return resp.status(200).json(reactivedUser)
 }
 
-const retrieveLoggedUser = () =>{
-
+const retrieveLoggedUserController = async (req: Request, resp: Response): Promise<Response> =>{
+    const userId: number = +req.user.id
+    const actualUser = await retrieveLoggedUserService(userId)
+    return resp.status(200).json(actualUser)
 }
 
 export {
@@ -46,5 +49,5 @@ export {
     updateUserController,
     deleteUserController,
     reactiveUserController,
-    retrieveLoggedUser
+    retrieveLoggedUserController
 }

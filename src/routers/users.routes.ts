@@ -1,8 +1,9 @@
 import { Router } from 'express'
-import ensureEmailIsUnique from '../middlewares/ensureEmailIsUnique.middlewares'
+import ensureEmailIsUnique from '../middlewares/ensureDevIsAdmin.middlewares'
 import ensureDataIsValidMiddleware from '../middlewares/ensureDataIsValid.middlewares'
 import ensureTokenIsValidMiddleware from '../middlewares/ensureTokenIsValid.middlewares'
 import ensureDevExistsMiddleware from '../middlewares/ensureDevExists.middlewares'
+import ensureDevIsAdminMiddleware from '../middlewares/ensureDevIsAdmin.middlewares'
 import { 
     createUserSchema, 
     updatedUserSchema 
@@ -13,16 +14,16 @@ import {
     reactiveUserController, 
     retrieveUsersController, 
     updateUserController,
-    retrieveLoggedUser
+    retrieveLoggedUserController
 } from '../controllers/users.controllers'
 
 const userRoutes: Router = Router()
 
 userRoutes.post('', ensureEmailIsUnique, ensureDataIsValidMiddleware(createUserSchema), createUserController)
-userRoutes.get('', ensureTokenIsValidMiddleware, retrieveUsersController)
-userRoutes.get('/profile', ensureTokenIsValidMiddleware)
-userRoutes.patch('/:id', ensureDevExistsMiddleware, ensureTokenIsValidMiddleware, ensureEmailIsUnique, ensureDataIsValidMiddleware(updatedUserSchema), updateUserController)
-userRoutes.delete('/:id', ensureDevExistsMiddleware, ensureTokenIsValidMiddleware, deleteUserController)
-userRoutes.put('/:id/recover', ensureDevExistsMiddleware, ensureTokenIsValidMiddleware, reactiveUserController)
+userRoutes.get('', ensureTokenIsValidMiddleware, ensureDevIsAdminMiddleware, retrieveUsersController)
+userRoutes.get('/profile', ensureTokenIsValidMiddleware, retrieveLoggedUserController)
+userRoutes.patch('/:id', ensureTokenIsValidMiddleware, ensureDevExistsMiddleware,  ensureEmailIsUnique, ensureDataIsValidMiddleware(updatedUserSchema), updateUserController)
+userRoutes.delete('/:id', ensureTokenIsValidMiddleware, ensureDevExistsMiddleware, deleteUserController)
+userRoutes.put('/:id/recover',ensureTokenIsValidMiddleware, ensureDevExistsMiddleware, ensureDevIsAdminMiddleware, reactiveUserController)
 
 export default userRoutes

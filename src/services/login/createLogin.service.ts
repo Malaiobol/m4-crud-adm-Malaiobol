@@ -45,7 +45,7 @@ const createLoginService = async (loginData: ILoginRequest): Promise<string> =>{
         {
             role: queryResult.rows[0].admin
         },
-        'CHAVE SECRETA',
+        process.env.SECRET_KEY!,
         {
             expiresIn: '24h',
             subject: queryResult.rows[0].id.toString()
