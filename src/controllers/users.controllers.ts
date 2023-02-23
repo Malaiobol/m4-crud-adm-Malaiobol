@@ -36,10 +36,15 @@ const reactiveUserController = async (req: Request, resp: Response): Promise<Res
     return resp.status(200).json(reactivedUser)
 }
 
+const retrieveLoggedUser = () =>{
+
+}
+
 export {
     createUserController,
     retrieveUsersController,
     updateUserController,
     deleteUserController,
-    reactiveUserController
+    reactiveUserController,
+    retrieveLoggedUser
 }

@@ -24,6 +24,12 @@ const reactiveUserService = async (userId: number): Promise<void> =>{
         throw new AppError('User not found', 404)
     }
 
+    const activeUser: boolean = queryResult.rows[0].active
+
+    if(activeUser){
+        throw new AppError('User already active', 400)
+    }
+
     const queryString: string = 
     `   
         UPDATE

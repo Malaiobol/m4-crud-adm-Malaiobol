@@ -35,9 +35,15 @@ const createLoginService = async (loginData: ILoginRequest): Promise<string> =>{
         throw new AppError ('Wrong email or password', 401)
     }
 
+    const activeUser: boolean = queryResult.rows[0].active
+
+    if(!activeUser){
+        throw new AppError ('Wrong email or password', 401)
+    }
+
     const token: string = jwt.sign(
         {
-            qualquerCoisa: 'alguma coisa'
+            role: queryResult.rows[0].admin
         },
         'CHAVE SECRETA',
         {
